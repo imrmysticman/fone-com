@@ -1,0 +1,8 @@
+# Python-related files
+__pycache__/
+*.py[cod]
+
+# Django-related files
+db.sqlite3
+*/migrations/
+*.env
