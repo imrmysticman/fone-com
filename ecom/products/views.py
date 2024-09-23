@@ -2,7 +2,11 @@ from django.shortcuts import render
 
 # Create your views here.
 def index(request):
-    return render (request,"index.html")
+    return render (request,"Home/index.html")
 def ListProducts(request):
     """g"""
-    return render(request,"list_layout.html")
+    return render(request,"ProductList/list_layout.html")
+def ProductDetail(request):
+    return render(request,"Products/product_page_layout.html")
+def Cart(request):
+    return render(request,"Cart/cart_layout.html")
