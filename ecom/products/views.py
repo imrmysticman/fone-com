@@ -1,10 +1,14 @@
 from django.shortcuts import render
-
+from .models import Product
 # Create your views here.
 def index(request):
+    
     return render (request,"Home/index.html")
 def ListProducts(request):
-    """g"""
-    return render(request,"ProductList/list_layout.html")
-def ProductDetail(request):
-    return render(request,"Products/product_page_layout.html")
+    obj = Product.objects.all()
+    
+    return render(request,"ProductList/list_layout.html",{"obj":obj})
+def ProductDetail(request,id):
+    obj = Product.objects.get(id=id)
+    
+    return render(request,"Products/product_page_layout.html",{"product":obj})
