@@ -6,6 +6,7 @@ class Product(models.Model):
     DELETE = 0
     DELETE_CHOICES = ((LIVE,"Live"),(DELETE,"Delete"))
     title = models.CharField(max_length=200)
+    brand = models.CharField(max_length=200,null=True)
     price = models.FloatField()
     description = models.TextField()
     image = models.ImageField(upload_to="media/")
@@ -15,4 +16,4 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:
-        return self.title
+        return self.brand + " " + self.title
