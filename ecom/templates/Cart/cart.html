@@ -6,51 +6,24 @@
             <th>Quantity</th>
             <th>Subtotal</th>
         </tr>
+        {%for obj in cart.order_item.all%}
         <tr>
             <td>
                 <div class="cart-info">
-                    <img src="images/buy-1.jpg">
+                    <img src={{obj.product.image.url}}>
                     <div>
-                        <p>Red Printed T-Shirt</p>
-                        <small>Price: $50.00</small>
+                        <p>{{obj.product.title}}</p>
+                        <small>{{obj.product.price}}</small>
                         <br>
                         <a href="">Remove</a>
                     </div>
                 </div>
             </td>
-            <td><input type="number" value="1"></td>
-            <td>$50.00</td>
+            <td><input type="number" value="{{obj.quantity}}"></td>
+            <td id="" value=""></td>
         </tr>
-        <tr>
-            <td>
-                <div class="cart-info">
-                    <img src="images/buy-2.jpg">
-                    <div>
-                        <p>Red Printed T-Shirt</p>
-                        <small>Price: $50.00</small>
-                        <br>
-                        <a href="">Remove</a>
-                    </div>
-                </div>
-            </td>
-            <td><input type="number" value="1"></td>
-            <td>$50.00</td>
-        </tr>
-        <tr>
-            <td>
-                <div class="cart-info">
-                    <img src="images/buy-3.jpg">
-                    <div>
-                        <p>Red Printed T-Shirt</p>
-                        <small>Price: $50.00</small>
-                        <br>
-                        <a href="">Remove</a>
-                    </div>
-                </div>
-            </td>
-            <td><input type="number" value="1"></td>
-            <td>$50.00</td>
-        </tr>
+        {%endfor%}
+  
     </tbody></table>
     <div class="total-price">
         <table>
