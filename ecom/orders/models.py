@@ -23,8 +23,11 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return "order-"+self.owner.name+"  "+str(self.id)
+
 class OrderItem(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name="order_item")
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=1)
     order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='order_item')
 

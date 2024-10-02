@@ -5,12 +5,24 @@ from orders.models import Order,OrderItem
 register = template.Library()
 
 @register.simple_tag
-def get_Order(context):
-    request = context.get("request")
-    user=request.user if request else None
-    customer=user.customer
-    Order=customer.order
-    Products=Order.orderItem
-    return Products
+def multiply(a,b):
+    return(a*b)
+
+
+@register.simple_tag
+def getSubTotal(cart):
+    total=0
+    for obj in cart.order_item.all():
+        total = obj.product.price * obj.quantity+total
+    return total
+
+@register.simple_tag        
+def tax(subtotal):
+    return subtotal*.18
+
+@register.simple_tag        
+def getTotal(subTotal,tax):
+    return subTotal+tax
+
 
 
