@@ -1,0 +1,18 @@
+{% extends "blank_layout.html" %}
+{% load static%}
+
+{% block header%}
+<link rel="stylesheet" href={%static "css/profile.css"%}>
+
+{% endblock header%}
+{% block content %}
+{% include "Account/Orders_page.html" %}
+{% endblock content %}
+
+{% block extra_scripts%}
+<script>
+    function confirmAction() {
+        return confirm("Are you sure you want to delete this order?");
+    }
+    </script>
+{% endblock extra_scripts%}

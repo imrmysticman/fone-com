@@ -29,5 +29,5 @@ class Order(models.Model):
 class OrderItem(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name="order_item")
     quantity = models.IntegerField(default=1)
-    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='order_item')
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='cart')
 

@@ -12,7 +12,7 @@ def multiply(a,b):
 @register.simple_tag
 def getSubTotal(cart):
     total=0
-    for obj in cart.order_item.all():
+    for obj in cart.cart.all():
         total = obj.product.price * obj.quantity+total
     return total
 
@@ -23,6 +23,3 @@ def tax(subtotal):
 @register.simple_tag        
 def getTotal(subTotal,tax):
     return subTotal+tax
-
-
-

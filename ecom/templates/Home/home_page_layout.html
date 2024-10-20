@@ -5,17 +5,25 @@
     <div class="categories">
         <div class="small-container">
             <div class="row">
-                <div class="col-5">
-                    <img src={% static "images/brands/samsung.webp"%}>
+                <div class="col-5" >
+                    <a href={% url "productbybrand" "Samsung" %}>
+                    <img src={% static "images/brands/samsung.webp"%}  >
+                </a>
                 </div>
                 <div class="col-5">
-                    <img src={% static "images/brands/apple.webp"%}>
+                    <a href={% url "productbybrand" "Apple" %}>
+
+                    <img src={% static "images/brands/apple.webp"%}></a>
                 </div>
                 <div class="col-5">
-                    <img src={% static "images/brands/google.webp"%}>
+                    <a href={% url "productbybrand" "Google" %}>
+
+                    <img src={% static "images/brands/google.webp"%}></a>
                 </div>
                 <div class="col-5">
-                    <img src={% static "images/brands/vivo.webp"%}>
+                    <a href={% url "productbybrand" "Vivo" %}>
+
+                    <img src={% static "images/brands/vivo.webp"%}></a>
                 </div>
             </div>
         </div>
@@ -68,27 +76,3 @@
 
 
 
-    <!-- Brands -->
-
-    <div class="brands">
-        <div class="small-container">
-            <div class="row">
-                <div class="col-5">
-                    <img src={% static "images/logo-goderej.png"%}>
-                </div>
-                <div class="col-5">
-                    <img src={% static "images/logo-oppo.png"%}>
-                    
-                </div>
-                <div class="col-5">
-                    <img src={% static "images/logo-coca-cola.png"%}>
-                </div>
-                <div class="col-5">
-                    <img src={% static "images/logo-paypal.png"%}>
-                </div>
-                <div class="col-5">
-                    <img src={% static "images/logo-philips.png"%}>
-                </div>
-            </div>
-        </div>
-    </div>
