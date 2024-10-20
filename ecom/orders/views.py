@@ -52,3 +52,10 @@ def checkout(request):
         order.save()
         print(order)
     return redirect("cart")
+def cancelOrder(request,id):
+    item = Order.objects.get(id=id)
+    print(item)
+    item.order_status=4
+    item.save()
+    return redirect("profile")
+
