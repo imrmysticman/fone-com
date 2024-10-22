@@ -6,5 +6,8 @@ urlpatterns = [
     path("account",views.Account,name="account"),
     path("logout",views.Logout,name="logout"),
     path("profile",views.Profile,name="profile"),
-    path("address",views.Address,name="address")
+    path("address",views.Address,name="address"),
+    path("verify",views.Verify, name="verify"),
+    path("verifyotp",views.VerifyOtp, name="verifyotp")
+
 ]

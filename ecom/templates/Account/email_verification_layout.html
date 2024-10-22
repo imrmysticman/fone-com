@@ -1,0 +1,20 @@
+{% extends "blank_layout.html" %}
+
+{% load static %}
+{% block header%}
+<link rel="stylesheet" href={%static "css/profile.css"%}>
+
+{% endblock header%}
+{% block content %}
+<div class="row">
+    {% include "Account/side_profile.html" %}
+    <div class="order-container col-md-8">
+    <form method="POST" action="verify">
+        {%csrf_token%}
+        <input type="text" value={{email}} name="email">
+        <button type="submit" class="btn">GetOtp</button>
+    </form>
+    
+    </div>
+</div>
+{%endblock%}
