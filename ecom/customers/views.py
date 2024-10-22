@@ -1,4 +1,6 @@
 from queue import Full
+from random import randint
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, render,redirect
 from .models import Customer
 from orders.models import Order,OrderItem
@@ -33,18 +35,14 @@ def Account(request):
         context["register"] = False
 
         try:
-            print(request.POST)
             username= request.POST.get("username")
             password= request.POST.get("password")
-            print (username,password)
             user = authenticate(request,username=username,password=password)
-            print(user)
             if user:
                 login(request,user)
                 return redirect("index")
             success_message="login successful"
             message.success(request,success_message)
-            print("success")
             return render(request,"Account/account_layout.html",context)
 
         except Exception as e:
@@ -64,15 +62,11 @@ def Profile(request):
     if request.user:        
         user = request.user
         customer=user.customer
-        print(customer)
         orders=Order.objects.filter(owner=customer).order_by('-created_at')
         obj=[]
         for items in orders:
             order = items.cart.all()
-            print(items.order_status)
-            print(order)
             obj.append({"status":items.order_status,"orders":order,"date":items.created_at,"id":items.id})
-        print(obj)
         return render(request,"Account/Profile_layout.html",{"obj":obj,"customer":customer,"email" : user.email})
     else:
         return redirect("login")
@@ -84,9 +78,13 @@ def Address(request):
 
         if request.method=="POST":
             form = AddressForm(request.POST)
+            phone = request.POST.get("phone")
+            if phone:
+                customer.phone = phone
+                customer.save()
             if form.is_valid():
                 address=form.save()
-                address.sav,e()
+                address.save()
                 customer.address = address
                 customer.save()
                 return redirect("profile")
@@ -97,6 +95,45 @@ def Address(request):
 
         return render(request,"Account/edit_address_layout.html",{"form":form,"customer":customer,"email":request.user.email,})
 
+def Verify(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        if request.method=="POST":
+            email=request.POST.get("email")
+            otp = randint(100000, 999999)
+
+            send_mail('OTP-foneCom',f'Your otp is {otp}','fonecom@gmail.com',[email],fail_silently=False)
+            request.session['email_otp'] = otp
+
+            return redirect("verifyotp")
 
 
-    
+        else:
+            return render(request,"Account/email_verification_layout.html",{"email":request.user.email,"customer":customer}
+)
+def VerifyOtp(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        if request.method=="POST":
+            otp=request.POST.get("otp")
+            sessionOtp=request.session.get("email_otp")
+            if otp==str(sessionOtp):
+                storage = messages.get_messages(request)
+                storage.used = True  # Mark all messages as used (cleared)
+                messages.success(request, "Email verified successfully!")
+                customer.email_verified=True
+                customer.save()
+                return redirect('profile')
+            else:
+                storage = messages.get_messages(request)
+                storage.used = True  # Mark all messages as used (cleared)
+                messages.error(request, "Invalid OTP")
+                return render(request,"Account/otp_verification_layout.html",{"email":request.user.email,"customer":customer})
+
+        else:
+            storage = messages.get_messages(request)
+            storage.used = True  # Mark all messages as used (cleared)
+            messages.success(request, "Check your email for OTP")
+
+            return render(request,"Account/otp_verification_layout.html",{"email":request.user.email,"customer":customer}
+)

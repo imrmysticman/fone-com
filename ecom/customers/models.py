@@ -66,6 +66,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=200)
     address = models.OneToOneField(Address,null=True,on_delete=models.SET_NULL, related_name="customer")
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="customer")
+    email_verified = models.BooleanField(default=False)
     phone = models.IntegerField()
     deleted_status = models.IntegerField(choices=DELETE_CHOICES,default=0 )
     created_at = models.DateTimeField(auto_now_add=True)

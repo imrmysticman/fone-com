@@ -10,7 +10,7 @@ def Cart(request):
         cart_obj,create=Order.objects.get_or_create(owner=customer,
                                              order_status=Order.CART_STAGE)
         context={"cart":cart_obj}
-
+        print(cart_obj.cart.all())
         return render(request,"Cart/cart_layout.html",context)
 
 
@@ -50,12 +50,28 @@ def checkout(request):
     if order:
         order.order_status=Order.ORDER_CONFIRMED
         order.save()
-        print(order)
-    return redirect("cart")
+    
+    return render(request,"Cart/confirmation_page.html")
 def cancelOrder(request,id):
     item = Order.objects.get(id=id)
-    print(item)
     item.order_status=4
     item.save()
     return redirect("profile")
+
+def confirmOrder(request):
+    if request.user:
+        if request.POST:
+            user = request.user
+            customer=user.customer
+            address = customer.address
+            print(address)
+            total = request.POST.get("total")
+            print(total)
+            context={
+                "total":total,
+                "address":address,
+                "customer":customer
+            }
+
+        return render(request,"Cart/confirm_order.html",context)
 

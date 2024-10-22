@@ -17,3 +17,12 @@ class Product(models.Model):
     
     def __str__(self) -> str:
         return self.brand + " " + self.title
+    
+class Banner(models.Model):
+    heading = models.CharField(max_length=400)
+    description = models.CharField(max_length=600)
+    product = models.OneToOneField(Product,related_name="Banner",on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self) -> str:
+        return self.product.title + "Banner" 

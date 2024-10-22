@@ -1,0 +1,25 @@
+{% extends "blank_layout.html" %}
+
+{% load static %}
+{% block header%}
+<link rel="stylesheet" href={%static "css/profile.css"%}>
+
+{% endblock header%}
+{% block content %}
+<div class="row">
+    {% include "Account/side_profile.html" %}
+    <div class="order-container col-md-8">
+        {%if messages%}
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+        {% endif%}
+    <form method="POST" action="verifyotp">
+        {%csrf_token%}
+        <input type="text"  name="otp">
+        <button type="submit" class="btn">verify</button>
+    </form>
+    
+    </div>
+</div>
+{%endblock%}

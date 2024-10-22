@@ -1,6 +1,7 @@
 {% load static  %}
 {%load order_tags%}
 <div class="small-container cart-page">
+    {%if cart.cart.all %}
     <table>
         <tbody><tr>
             <th>Product</th>
@@ -43,14 +44,18 @@
             </tr>
             <tr>
                 <td>Total</td>
-                <td>{%getTotal Subtotal tax%}</td>
+                <td>{%getTotal Subtotal tax as total%}{{total}}</td>
             </tr>
         </tbody></table>
         
     </div>
-    <form method="POST" action ={% url "checkout"%} enctype="multipart/form-data">
+    <form method="POST" action ={% url "confirmorder"%} enctype="multipart/form-data">
         {% csrf_token %}
         <input type = "hidden" name="cart" value={{cart}}>
-        <button type="submit" style="background-color: #4CAF50; color: white;width:30%;float:right" class="btn ">checkout</button>
-    </form>
+        <input type="hidden" name = "total" value = {{total}}>
+        <button type="submit" style="background-color: green; color: white;width:30%;float:right" class="btn ">Procceed</button>
+    </form> 
+    {%else%}
+    <div>Cart is empty</div>
+    {%endif%}
 </div>

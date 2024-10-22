@@ -1,15 +1,16 @@
 {% load static %}
+{% load custom_tags %}
 
     <div class="banner">
         <div class="row">
             <div class="col-2">
-                <h1>Stay Connected with  <br>Cutting-Edge Technology</h1>
-                <p>Experience the pinnacle of technology with the latest flagship models.
-                    <br> Ultra-fast processors, stunning displays, and advanced cameras all in one sleek device.</p>
-                <a href={%url "products"%} class="btn">Explore Now &#8594;</a>
+                {%getBanner as Banner%}
+                <h1>{{Banner.heading}}</h1>
+                <p>{{Banner.description}}.</p>
+                <a href={% url "productdetails" Banner.product.id%} class="btn">Buy Now &#8594;</a>
             </div>
             <div class="col-4">
-                <img src={% static "images/iphone.webp"%}>
+                <img src={{Banner.product.image.url}}>
             </div>
         </div>
     </div>

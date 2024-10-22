@@ -13,6 +13,5 @@ def ProductDetail(request,id):
     
     return render(request,"Products/product_page_layout.html",{"product":obj})
 def ProductByBrands(request,brand):
-    print(brand)
     obj = Product.objects.filter(brand=brand)
     return render(request,"ProductList/list_layout.html",{"obj":obj})
