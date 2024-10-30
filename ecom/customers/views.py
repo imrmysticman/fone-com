@@ -71,12 +71,14 @@ def Profile(request):
     else:
         return redirect("login")
 
-def Address(request):
+def Address(request,procceed):
+    user = request.user
 
-    if request.user.is_authenticated:
-        customer = request.user.customer
+    if user.is_authenticated:
+        customer = user.customer
 
         if request.method=="POST":
+
             form = AddressForm(request.POST)
             phone = request.POST.get("phone")
             if phone:
@@ -87,13 +89,15 @@ def Address(request):
                 address.save()
                 customer.address = address
                 customer.save()
-                return redirect("profile")
-        user = request.user
+                if procceed=='true':
+                    return redirect("confirmorder")
+                else:
+                    return redirect("profile")
         if customer.address:
             form = AddressForm(instance=customer.address)
-
-
-        return render(request,"Account/edit_address_layout.html",{"form":form,"customer":customer,"email":request.user.email,})
+        else:
+            form=AddressForm
+        return render(request,"Account/edit_address_layout.html",{"form":form,"customer":customer,"email":request.user.email,"procceed":procceed})
 
 def Verify(request):
     if request.user.is_authenticated:
@@ -123,7 +127,7 @@ def VerifyOtp(request):
                 messages.success(request, "Email verified successfully!")
                 customer.email_verified=True
                 customer.save()
-                return redirect('profile')
+                return redirect('cart')
             else:
                 storage = messages.get_messages(request)
                 storage.used = True  # Mark all messages as used (cleared)

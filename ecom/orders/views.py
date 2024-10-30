@@ -4,12 +4,13 @@ from .models import Order,OrderItem
 from products.models import Product
 # Create your views here.
 def Cart(request):
-    if request.user:
-        user = request.user
+    user = request.user
+    if user:
         customer=user.customer
         cart_obj,create=Order.objects.get_or_create(owner=customer,
                                              order_status=Order.CART_STAGE)
-        context={"cart":cart_obj}
+        email_verified=customer.email_verified
+        context={"cart":cart_obj,"verified":email_verified}
         print(cart_obj.cart.all())
         return render(request,"Cart/cart_layout.html",context)
 
@@ -65,10 +66,11 @@ def confirmOrder(request):
             customer=user.customer
             address = customer.address
             print(address)
+            cart_obj=Order.objects.get(owner=customer,order_status=Order.CART_STAGE)
+            print(cart_obj)
             total = request.POST.get("total")
             print(total)
             context={
-                "total":total,
                 "address":address,
                 "customer":customer
             }

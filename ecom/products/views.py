@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .models import Product
+from django.db.models import Q
 # Create your views here.
 def index(request):
     
@@ -15,3 +17,8 @@ def ProductDetail(request,id):
 def ProductByBrands(request,brand):
     obj = Product.objects.filter(brand=brand)
     return render(request,"ProductList/list_layout.html",{"obj":obj})
+def SearchProducts(request):
+    query=request.GET.get("query")
+    obj = Product.objects.filter(Q(title__icontains=query) | Q(brand__icontains=query))
+    results=[{"id":product.id,"title":product.title} for product in obj]
+    return JsonResponse({"results":results})
