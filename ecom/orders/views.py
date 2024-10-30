@@ -61,19 +61,26 @@ def cancelOrder(request,id):
 
 def confirmOrder(request):
     if request.user:
-        if request.POST:
-            user = request.user
-            customer=user.customer
-            address = customer.address
-            print(address)
-            cart_obj=Order.objects.get(owner=customer,order_status=Order.CART_STAGE)
-            print(cart_obj)
-            total = request.POST.get("total")
-            print(total)
-            context={
-                "address":address,
-                "customer":customer
-            }
+        user = request.user
+        customer=user.customer
+        address = customer.address
+        print(address)
+        cart_obj=Order.objects.get(owner=customer,order_status=Order.CART_STAGE)
+        print(cart_obj)
+        orders=cart_obj.cart.all()
+        print(orders)
+        total = 0
+        for obj in orders:
+            product = obj.product
+            print(product.price)
+            total = total+int(product.price)*int(obj.quantity)
+
+        total=total+total*0.18
+        context={
+            "address":address,
+            "total":total,
+            "customer":customer
+        }
 
         return render(request,"Cart/confirm_order.html",context)
 
