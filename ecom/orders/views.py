@@ -59,6 +59,13 @@ def cancelOrder(request,id):
     item.save()
     return redirect("profile")
 
+def confirmCancelOrder(request,id):
+    order = Order.objects.get(id=id)
+    items = order.cart.all()
+    print("cancelitems:",items)
+    return render(request,"account/confirm_cancel.html",{"obj":items,"id":id})
+              
+
 def confirmOrder(request):
     if request.user:
         user = request.user

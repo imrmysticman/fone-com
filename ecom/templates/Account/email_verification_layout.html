@@ -8,11 +8,11 @@
 {% block content %}
 <div class="row">
     {% include "Account/side_profile.html" %}
-    <div class="order-container col-md-8">
+    <div class="order-container col-md-4" style="width:500px">
     <form method="POST" action="verify">
         {%csrf_token%}
-        <input type="text" value={{email}} name="email">
-        <button type="submit" class="btn">GetOtp</button>
+        <input type="text" value={{email}} name="email" style="width:500px">
+        <button type="submit" class="btn" style="width:200px">GetOtp</button>
     </form>
     
     </div>
