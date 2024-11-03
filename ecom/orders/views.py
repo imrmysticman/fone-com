@@ -55,8 +55,9 @@ def checkout(request):
     return render(request,"Cart/confirmation_page.html")
 def cancelOrder(request,id):
     item = Order.objects.get(id=id)
-    item.order_status=4
-    item.save()
+    if request.user == item.owner.user:
+        item.order_status=4
+        item.save()
     return redirect("profile")
 
 def confirmCancelOrder(request,id):
