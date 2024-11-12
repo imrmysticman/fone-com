@@ -1,14 +1,18 @@
 {% load static %}
 <div class="small-container">
     <div class="row row-2">
+        {% if brand%}
+        <h2> {{brand}}</brand>
+        {%else%}
         <h2>All Products</h2>
-        <select>
+        {%endif%}
+        {% comment %} <select>
             <option>Default Sort</option>
             <option>Sort By Price</option>
             <option>Sort By Popularity</option>
             <option>Sort By Rating</option>
             <option>Sort By Sale</option>
-        </select>
+        </select> {% endcomment %}
     </div>
     <div class="row">
         {% for item in obj %}

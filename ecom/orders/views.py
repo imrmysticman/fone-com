@@ -20,24 +20,28 @@ def Cart(request):
 def AddToCart(request):
     if request.POST:
         user=request.user
-        customer = user.customer
-        product_id = request.POST.get("product_id")
-        quantity = int(request.POST.get("quantity"))
-        cart_obj,created=Order.objects.get_or_create(
-            owner=customer,
-            order_status=Order.CART_STAGE
-        )
-        cart_obj.save()
-        ordered_item,created = OrderItem.objects.get_or_create(
-        product=Product.objects.get(id=product_id),
-        order=cart_obj
-        )
-        if created:
-            ordered_item.quantity=quantity
+        if user.is_authenticated:
+            print(user)
+            customer = user.customer
+            product_id = request.POST.get("product_id")
+            quantity = int(request.POST.get("quantity"))
+            cart_obj,created=Order.objects.get_or_create(
+                owner=customer,
+                order_status=Order.CART_STAGE
+            )
+            cart_obj.save()
+            ordered_item,created = OrderItem.objects.get_or_create(
+            product=Product.objects.get(id=product_id),
+            order=cart_obj
+            )
+            if created:
+                ordered_item.quantity=quantity
+            else:
+                ordered_item.quantity=ordered_item.quantity+quantity
+            ordered_item.save()
+            return redirect("cart")
         else:
-            ordered_item.quantity=ordered_item.quantity+quantity
-        ordered_item.save()
-        return redirect("cart")
+            return redirect("account")
 def removeProduct(request):
     if request.POST:
         obj=request.POST.get("obj_id")
