@@ -4,9 +4,7 @@
   align-items: flex-start; /* Ensures content aligns to the top */
 }
 
-.profile-container {
-  /* If needed, you can add styles here */
-}
+
 
 .orders-card {
   display: grid;
@@ -30,26 +28,19 @@
 }
 
 .address-card {
-  /* Takes up 1/4th of the screen width */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   text-align: center;
-  margin-left: 30px;
-  margin-bottom: 100px;
-  padding-bottom: 40px;
-  padding-top:40px;
-  position: static;
-  margin-top: 10px;
+  margin: 10px auto; /* Center the card horizontally */
+  padding: 40px;
   display: flex;
-  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row; /* Horizontal layout by default */
+  max-width: 75%; /* Takes 3/4th of the screen width on desktop */
 }
 
-.profile-side{
-  width: 50%;
-}
-.address-side{
-  width: 50%;
 
-  padding-right: 10%;
+.profile-side, .address-side {
+  flex: 1; /* Allows each side to take equal space */
 }
 
 .title {
@@ -105,9 +96,20 @@
     margin-left: 0;
     padding: 15px;
   }
+
   
-  .profile-card {
-    width: 100%;
-    max-width: 80%;
-    margin-bottom: 20px;  }
+  .address-card {
+    flex-direction: column; /* Stack vertically on mobile */
+    max-width: 90%; /* Adjust width for mobile */
+    padding: 20px;
+    margin: 20px auto; /* Center with smaller margin on mobile */
+  }
+
+  .profile-image {
+      width: 60%; /* Larger profile image on mobile */
+  }
+
+  .btn {
+      width: 80%; /* Full-width button on mobile */
+  }
 }

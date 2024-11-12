@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .forms import AddressForm
+from datetime import datetime, timedelta
+
 # Create your views here.
 def Account(request):
     context={}
@@ -140,4 +142,27 @@ def VerifyOtp(request):
             messages.success(request, "Check your email for OTP")
 
             return render(request,"Account/otp_verification_layout.html",{"email":request.user.email,"customer":customer}
+)
+def ForgotPassword(request):
+        if request.method=="POST":
+            email=request.POST.get("email")
+            email = request.POST.get('email')
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                messages.error(request, "User with this email does not exist.")
+                return redirect('reset')
+            request.session['otp_email'] = email
+            request.session['otp_expiry'] = (datetime.now() + timedelta(minutes=10)).isoformat()
+
+            otp = randint(100000, 999999)
+
+            send_mail('OTP-foneCom',f'Your otp is {otp}','fonecom@gmail.com',[email],fail_silently=False)
+            request.session['email_otp'] = otp
+
+            return redirect("")
+
+
+        else:
+            return render(request,"Account/reset_password.html"
 )

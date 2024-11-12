@@ -16,9 +16,9 @@ def ProductDetail(request,id):
     return render(request,"Products/product_page_layout.html",{"product":obj})
 def ProductByBrands(request,brand):
     obj = Product.objects.filter(brand=brand)
-    return render(request,"ProductList/list_layout.html",{"obj":obj})
+    return render(request,"ProductList/list_layout.html",{"obj":obj,"brand":brand})
 def SearchProducts(request):
     query=request.GET.get("query")
     obj = Product.objects.filter(Q(title__icontains=query) | Q(brand__icontains=query))
-    results=[{"id":product.id,"title":product.title} for product in obj]
+    results=[{"id":product.id,"title":product.brand+" "+product.title} for product in obj]
     return JsonResponse({"results":results})
