@@ -151,3 +151,6 @@ CACHES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# settings.py
+RAZORPAY_KEY_ID = 'rzp_test_n2pbqGguu5XhZe'
+RAZORPAY_KEY_SECRET = 'KprPrrZf0Xj4QRY3efIyjLC6'

@@ -24,8 +24,12 @@
 
 <div style="width: 100%; display: flex; justify-content: flex-end;">
     {%if customer.address%}
+    <form method = "post" action ={% url "payment"%}>
+        {%csrf_token%}
+        <input type = "hidden" name="amount" value={{total}}/>
+        <button type="submit" class="btn" style="background-color:green">Procceed to payment</button>
 
-    <a href = {%url "checkout"%} class="btn" style="background-color:green">Procceed to payment</a>
+    </form>
     {%else%}
     <a href = {%url "address" procceed="true"%} class="btn" style="background-color:green">Add address to continue</a>
     {%endif%}
