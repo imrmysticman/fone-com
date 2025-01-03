@@ -1,3 +1,5 @@
+import razorpay
+from django.conf import settings
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from .models import Order,OrderItem
@@ -57,6 +59,7 @@ def checkout(request):
         order.save()
     
     return render(request,"Cart/confirmation_page.html")
+
 def cancelOrder(request,id):
     item = Order.objects.get(id=id)
     if request.user == item.owner.user:
@@ -95,4 +98,26 @@ def confirmOrder(request):
         }
 
         return render(request,"Cart/confirm_order.html",context)
+def payment(request):
+    if request.method == "POST":
+        amount_str = request.POST.get("amount").strip("/")
+        amount = int(float(amount_str) * 100)  # Convert to paise
+        print("amount",amount)
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        print(client)
+        order = client.order.create({
+            "amount": amount,
+            "currency": "INR",
+            "payment_capture": 1,  # Auto-capture payment
+        })
+
+        context = {
+            "razorpay_key_id": settings.RAZORPAY_KEY_ID,
+            "order_id": order["id"],
+            "amount": amount,
+        }
+        return render(request, "cart/payment.html", context)
+
+    return render(request, "cart/payment.html")
+    
 
