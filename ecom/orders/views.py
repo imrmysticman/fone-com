@@ -1,9 +1,14 @@
 import razorpay
+import hmac
+import hashlib
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from .models import Order,OrderItem
 from products.models import Product
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 def Cart(request):
     user = request.user
@@ -51,13 +56,6 @@ def removeProduct(request):
         orderItem.delete()
     return redirect("cart")
 def checkout(request):
-    user=request.user
-    customer=user.customer
-    order=Order.objects.get(owner=customer,order_status=Order.CART_STAGE)
-    if order:
-        order.order_status=Order.ORDER_CONFIRMED
-        order.save()
-    
     return render(request,"Cart/confirmation_page.html")
 
 def cancelOrder(request,id):
@@ -120,4 +118,31 @@ def payment(request):
 
     return render(request, "cart/payment.html")
     
+@csrf_exempt
+def payment_success(request):
+    if request.method == "POST":
+        import json
+        payload = json.loads(request.body)
+        razorpay_order_id = payload.get('razorpay_order_id')
+        razorpay_payment_id = payload.get('razorpay_payment_id')
+        razorpay_signature = payload.get('razorpay_signature')
+
+        generated_signature = hmac.new(
+            settings.RAZORPAY_KEY_SECRET.encode('utf-8'),
+            (razorpay_order_id + "|" + razorpay_payment_id).encode('utf-8'),
+            hashlib.sha256
+        ).hexdigest()
+
+        if generated_signature == razorpay_signature:
+            # Payment is successful
+            user=request.user
+            customer=user.customer
+            order=Order.objects.get(owner=customer,order_status=Order.CART_STAGE)
+            if order:
+                order.order_status=Order.ORDER_CONFIRMED
+                order.save()
+            return JsonResponse({"message": "Payment verified successfully!"})
+            
+        else:
+            return JsonResponse({"message": "Payment verification failed!"}, status=400)
 
