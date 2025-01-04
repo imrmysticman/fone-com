@@ -7,7 +7,7 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
-    <h1>Payment Checkout</h1>
+    <h1>Redirecting,Don't Refresh</h1>
 
     {% if razorpay_key_id and order_id %}
     <script>
@@ -20,7 +20,8 @@
             "order_id": "{{ order_id }}", // Order ID from Razorpay
             "handler": function (response) {
                 // Send response data to backend for verification
-                fetch('/payment-success/', {
+                console.log(response)
+                fetch('/order/payment-success/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -28,7 +29,10 @@
                     },
                     body: JSON.stringify(response)
                 }).then(res => res.json())
-                .then(data => alert(data.message));
+                .then(data => alert(data.message)).then(
+                    window.location.href="/order/checkout"
+                )
+                ;
             },
             "prefill": {
                 "name": "John Doe",
